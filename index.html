@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Static Page Forge – Pure HTML/CSS Generator</title>
+<style>
+  :root {
+	--bg: #0f1115;
+	--card: #1a1d24;
+	--border: #2a2f3a;
+	--text: #e6e8ec;
+	--muted: #9aa3b2;
+	--accent: #6ee7b7;
+	--accent-dim: #34d399;
+	--danger: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+	background: var(--bg);
+	color: var(--text);
+	line-height: 1.5;
+	min-height: 100vh;
+	padding: 2rem 1rem;
+  }
+  .wrap {
+	max-width: 860px;
+	margin: 0 auto;
+  }
+  h1 {
+	font-size: 1.75rem;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	margin-bottom: 0.35rem;
+  }
+  .sub {
+	color: var(--muted);
+	margin-bottom: 2rem;
+	font-size: 0.95rem;
+  }
+  .card {
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	padding: 1.5rem;
+	margin-bottom: 1.5rem;
+  }
+  label {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--muted);
+	margin-bottom: 0.4rem;
+  }
+  input[type="text"],
+  textarea,
+  select {
+	width: 100%;
+	background: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	color: var(--text);
+	padding: 0.7rem 0.9rem;
+	font-size: 0.95rem;
+	font-family: inherit;
+	margin-bottom: 1.1rem;
+  }
+  textarea {
+	min-height: 160px;
+	resize: vertical;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.9rem;
+  }
+  input:focus, textarea:focus, select:focus {
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+  }
+  .row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+  }
+  @media (max-width: 600px) {
+	.row { grid-template-columns: 1fr; }
+  }
+  .theme-swatches {
+	display: flex;
+	gap: 0.6rem;
+	flex-wrap: wrap;
+	margin-bottom: 1.1rem;
+  }
+  .swatch {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	cursor: pointer;
+	transition: transform 0.15s;
+  }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch.active { border-color: white; }
+  button {
+	background: var(--accent);
+	color: #0f1115;
+	border: none;
+	border-radius: 8px;
+	padding: 0.85rem 1.4rem;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.15s;
+  }
+  button:hover { background: var(--accent-dim); }
+  button:active { transform: translateY(1px); }
+  .actions {
+	display: flex;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	margin-top: 0.5rem;
+  }
+  .secondary {
+	background: transparent;
+	color: var(--text);
+	border: 1px solid var(--border);
+  }
+  .secondary:hover {
+	background: var(--border);
+	color: var(--text);
+  }
+  .note {
+	margin-top: 1.5rem;
+	font-size: 0.85rem;
+	color: var(--muted);
+	border-left: 3px solid var(--accent);
+	padding-left: 0.9rem;
+  }
+  .preview-frame {
+	width: 100%;
+	height: 420px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: white;
+	margin-top: 1rem;
+  }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Static Page Forge</h1>
+  <p class="sub">Generate pure HTML + CSS pages. No JavaScript, no forms that talk to servers, no external resources. Extremely hard to “hack” because there’s almost nothing to attack.</p>
+
+  <div class="card">
+	<label for="title">Page title</label>
+	<input type="text" id="title" value="My Secure Static Page" placeholder="Page title">
+
+	<label for="heading">Main heading</label>
+	<input type="text" id="heading" value="Hello, static world" placeholder="Main heading">
+
+	<label for="content">Body content (plain text or simple HTML tags only)</label>
+	<textarea id="content" placeholder="Write your content here. You can use <p>, <h2>, <ul>, <li>, <strong>, <em>, <a href='...'> etc. No scripts.">This page contains only HTML and CSS.
+There is no JavaScript, no cookies, no tracking, and no server-side code.
+Attack surface is essentially zero.</textarea>
+
+	<div class="row">
+	  <div>
+		<label for="font">Font style</label>
+		<select id="font">
+		  <option value="system-ui, sans-serif">System UI</option>
+		  <option value="Georgia, serif">Serif</option>
+		  <option value="'Courier New', monospace">Monospace</option>
+		  <option value="'Segoe UI', Roboto, sans-serif">Clean Sans</option>
+		</select>
+	  </div>
+	  <div>
+		<label>Color theme</label>
+		<div class="theme-swatches" id="themes">
+		  <div class="swatch active" data-bg="#f8fafc" data-text="#0f172a" data-accent="#0ea5e9" style="background:#0ea5e9" title="Sky"></div>
+		  <div class="swatch" data-bg="#0f172a" data-text="#e2e8f0" data-accent="#34d399" style="background:#34d399" title="Dark emerald"></div>
+		  <div class="swatch" data-bg="#1c1917" data-text="#fafaf9" data-accent="#f59e0b" style="background:#f59e0b" title="Warm dark"></div>
+		  <div class="swatch" data-bg="#fdf4ff" data-text="#4a044e" data-accent="#c026d3" style="background:#c026d3" title="Soft purple"></div>
+		  <div class="swatch" data-bg="#ecfdf5" data-text="#064e3b" data-accent="#059669" style="background:#059669" title="Mint"></div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="actions">
+	  <button id="generate">Generate &amp; Download .html</button>
+	  <button class="secondary" id="previewBtn">Live Preview</button>
+	</div>
+
+	<iframe id="preview" class="preview-frame hidden" title="Preview" sandbox=""></iframe>
+
+	<p class="note">
+	  Generated files contain <strong>zero JavaScript</strong>.  
+	  They are just HTML + embedded CSS.  
+	  No external CDNs, no analytics, no forms that POST anywhere.  
+	  The only way to “hack” them is to somehow change the file on the server that hosts them.
+	</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Theme selection
+  const swatches = document.querySelectorAll('.swatch');
+  let chosen = {
+	bg: '#f8fafc',
+	text: '#0f172a',
+	accent: '#0ea5e9'
+  };
+
+  swatches.forEach(s => {
+	s.addEventListener('click', () => {
+	  swatches.forEach(x => x.classList.remove('active'));
+	  s.classList.add('active');
+	  chosen = {
+		bg: s.dataset.bg,
+		text: s.dataset.text,
+		accent: s.dataset.accent
+	  };
+	});
+  });
+
+  function buildPage() {
+	const title   = document.getElementById('title').value.trim() || 'Untitled';
+	const heading = document.getElementById('heading').value.trim() || 'Heading';
+	const content = document.getElementById('content').value.trim() || '';
+	const font    = document.getElementById('font').value;
+
+	// Escape only the dangerous characters that could inject scripts
+	// (we still allow basic safe tags the user types)
+	function safe(str) {
+	  return str
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
+	}
+
+	// Allow a very small whitelist of tags by converting them back
+	// after the escape (simple approach)
+	let bodyHtml = safe(content)
+	  .replace(/&lt;(\/?p)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?h[1-6])&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?ul)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?ol)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?li)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?strong)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?em)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?b)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?i)&gt;/gi, '<$1>')
+	  .replace(/&lt;(\/?br\s*\/?)&gt;/gi, '<br>')
+	  .replace(/&lt;a\s+href=&quot;([^&quot;]*)&quot;&gt;/gi, '<a href="$1">')
+	  .replace(/&lt;\/a&gt;/gi, '</a>');
+
+	// Convert newlines to <p> if no tags were used
+	if (!/<[a-z]/i.test(bodyHtml)) {
+	  bodyHtml = bodyHtml
+		.split(/\n\s*\n/)
+		.map(para => para.trim() ? `<p>${para.replace(/\n/g, '<br>')}</p>` : '')
+		.join('\n');
+	}
+
+	return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>${safe(title)}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+	font-family: ${font};
+	background: ${chosen.bg};
+	color: ${chosen.text};
+	line-height: 1.65;
+	min-height: 100vh;
+	padding: 3rem 1.25rem;
+  }
+  .container {
+	max-width: 680px;
+	margin: 0 auto;
+  }
+  h1 {
+	font-size: clamp(1.8rem, 5vw, 2.4rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	margin-bottom: 1.5rem;
+	color: ${chosen.accent};
+  }
+  p, ul, ol {
+	margin-bottom: 1.1rem;
+	font-size: 1.05rem;
+  }
+  ul, ol { padding-left: 1.4rem; }
+  a {
+	color: ${chosen.accent};
+	text-decoration: underline;
+	text-underline-offset: 3px;
+  }
+  a:hover { opacity: 0.85; }
+  footer {
+	margin-top: 3rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid color-mix(in srgb, ${chosen.text} 15%, transparent);
+	font-size: 0.85rem;
+	opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+	<h1>${safe(heading)}</h1>
+	${bodyHtml}
+	<footer>
+	  Pure HTML + CSS • No JavaScript • Generated ${new Date().toISOString().slice(0,10)}
+	</footer>
+  </div>
+</body>
+</html>`;
+  }
+
+  document.getElementById('generate').addEventListener('click', () => {
+	const html = buildPage();
+	const blob = new Blob([html], { type: 'text/html' });
+	const url  = URL.createObjectURL(blob);
+	const a    = document.createElement('a');
+	a.href     = url;
+	a.download = (document.getElementById('title').value.trim() || 'page')
+				   .toLowerCase()
+				   .replace(/[^a-z0-9]+/g, '-')
+				   .replace(/^-|-$/g, '') + '.html';
+	a.click();
+	URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('previewBtn').addEventListener('click', () => {
+	const frame = document.getElementById('preview');
+	frame.classList.remove('hidden');
+	frame.srcdoc = buildPage();
+  });
+})();
+</script>
+</body>
+</html>
